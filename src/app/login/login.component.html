@@ -1,0 +1,38 @@
+<div class="container col-4">
+    <div class="box">
+        <h2>Damka</h2>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <p class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="statusRadios" id="teacher" value="teacher"
+                        (click)="setIsLogin(true)" checked>
+                    <label class="form-check-label" for="teacher">
+                        Login
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="statusRadios" id="student" value="student"
+                        (click)="setIsLogin(false)">
+                    <label class="form-check-label" for="student">
+                        Sign up
+                    </label>
+                </div><br>
+                <div class="input-group mb-3" style="margin-top: 10px;">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">User name</span>
+                    </div>
+                    <input type="text" formControlName="userName" class="form-control" placeholder="Username"
+                        aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Password</span>
+                    </div>
+                    <input type="password" formControlName="password" class="form-control" placeholder="Password"
+                        aria-label="Password" aria-describedby="basic-addon1">
+                </div>
+                <p *ngIf="error.length > 0"><small style="color: red;">{{error}}</small></p>
+                <button type="submit" [disabled]="!form.valid" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>

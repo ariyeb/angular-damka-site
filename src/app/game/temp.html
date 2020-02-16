@@ -1,0 +1,231 @@
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #1="cdkDropList" [cdkDropListData]="pieces[0]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[0].length > 0" [src]="pieces[0][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[0][0].getIsCanMove()" [cdkDragData]="pieces[0][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #2="cdkDropList" [cdkDropListData]="pieces[1]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[1].length > 0" [src]="pieces[1][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[1][0].getIsCanMove()" [cdkDragData]="pieces[1][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #3="cdkDropList" [cdkDropListData]="pieces[2]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[2].length > 0" [src]="pieces[2][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[2][0].getIsCanMove()" [cdkDragData]="pieces[2][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #4="cdkDropList" [cdkDropListData]="pieces[3]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[3].length > 0" [src]="pieces[3][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[3][0].getIsCanMove()" [cdkDragData]="pieces[3][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+
+<div class="square-black" cdkDropList #5="cdkDropList" [cdkDropListData]="pieces[4]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[4].length > 0" [src]="pieces[4][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[4][0].getIsCanMove()" [cdkDragData]="pieces[4][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #6="cdkDropList" [cdkDropListData]="pieces[5]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[5].length > 0" [src]="pieces[5][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[5][0].getIsCanMove()" [cdkDragData]="pieces[5][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #7="cdkDropList" [cdkDropListData]="pieces[6]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[6].length > 0" [src]="pieces[6][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[6][0].getIsCanMove()" [cdkDragData]="pieces[6][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #8="cdkDropList" [cdkDropListData]="pieces[7]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[7].length > 0" [src]="pieces[7][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[7][0].getIsCanMove()" [cdkDragData]="pieces[7][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #9="cdkDropList" [cdkDropListData]="pieces[8]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[8].length > 0" [src]="pieces[8][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[8][0].getIsCanMove()" [cdkDragData]="pieces[8][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #10="cdkDropList" [cdkDropListData]="pieces[9]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[9].length > 0" [src]="pieces[9][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[9][0].getIsCanMove()" [cdkDragData]="pieces[9][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #11="cdkDropList" [cdkDropListData]="pieces[10]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[10].length > 0" [src]="pieces[10][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[10][0].getIsCanMove()" [cdkDragData]="pieces[10][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #12="cdkDropList" [cdkDropListData]="pieces[11]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[11].length > 0" [src]="pieces[11][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[11][0].getIsCanMove()" [cdkDragData]="pieces[11][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+
+<div class="square-black" cdkDropList #13="cdkDropList" [cdkDropListData]="pieces[12]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[12].length > 0" [src]="pieces[12][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[12][0].getIsCanMove()" [cdkDragData]="pieces[12][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #14="cdkDropList" [cdkDropListData]="pieces[13]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[13].length > 0" [src]="pieces[13][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[13][0].getIsCanMove()" [cdkDragData]="pieces[13][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #15="cdkDropList" [cdkDropListData]="pieces[14]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[14].length > 0" [src]="pieces[14][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[14][0].getIsCanMove()" [cdkDragData]="pieces[14][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #16="cdkDropList" [cdkDropListData]="pieces[15]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[15].length > 0" [src]="pieces[15][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[15][0].getIsCanMove()" [cdkDragData]="pieces[15][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #17="cdkDropList" [cdkDropListData]="pieces[16]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[16].length > 0" [src]="pieces[16][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[16][0].getIsCanMove()" [cdkDragData]="pieces[16][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #18="cdkDropList" [cdkDropListData]="pieces[17]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[17].length > 0" [src]="pieces[17][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[17][0].getIsCanMove()" [cdkDragData]="pieces[17][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #19="cdkDropList" [cdkDropListData]="pieces[18]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[18].length > 0" [src]="pieces[18][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[18][0].getIsCanMove()" [cdkDragData]="pieces[18][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #20="cdkDropList" [cdkDropListData]="pieces[19]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[19].length > 0" [src]="pieces[19][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[19][0].getIsCanMove()" [cdkDragData]="pieces[19][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+
+<div class="square-black" cdkDropList #21="cdkDropList" [cdkDropListData]="pieces[20]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[20].length > 0" [src]="pieces[20][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[20][0].getIsCanMove()" [cdkDragData]="pieces[20][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #22="cdkDropList" [cdkDropListData]="pieces[21]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[21].length > 0" [src]="pieces[21][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[21][0].getIsCanMove()" [cdkDragData]="pieces[21][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #23="cdkDropList" [cdkDropListData]="pieces[22]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[22].length > 0" [src]="pieces[22][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[22][0].getIsCanMove()" [cdkDragData]="pieces[22][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #24="cdkDropList" [cdkDropListData]="pieces[23]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[23].length > 0" [src]="pieces[23][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[23][0].getIsCanMove()" [cdkDragData]="pieces[23][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #25="cdkDropList" [cdkDropListData]="pieces[24]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[24].length > 0" [src]="pieces[24][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[24][0].getIsCanMove()" [cdkDragData]="pieces[24][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #26="cdkDropList" [cdkDropListData]="pieces[25]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[25].length > 0" [src]="pieces[25][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[25][0].getIsCanMove()" [cdkDragData]="pieces[25][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #27="cdkDropList" [cdkDropListData]="pieces[26]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[26].length > 0" [src]="pieces[26][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[26][0].getIsCanMove()" [cdkDragData]="pieces[26][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #28="cdkDropList" [cdkDropListData]="pieces[27]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[27].length > 0" [src]="pieces[27][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[27][0].getIsCanMove()" [cdkDragData]="pieces[27][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+
+<div class="square-black" cdkDropList #29="cdkDropList" [cdkDropListData]="pieces[28]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[28].length > 0" [src]="pieces[28][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[28][0].getIsCanMove()" [cdkDragData]="pieces[28][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #30="cdkDropList" [cdkDropListData]="pieces[29]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[29].length > 0" [src]="pieces[29][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[29][0].getIsCanMove()" [cdkDragData]="pieces[29][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #31="cdkDropList" [cdkDropListData]="pieces[30]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[30].length > 0" [src]="pieces[30][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[30][0].getIsCanMove()" [cdkDragData]="pieces[30][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white"></div>
+<div class="square-black" cdkDropList #32="cdkDropList" [cdkDropListData]="pieces[31]"
+    (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+    <img *ngIf="pieces[31].length > 0" [src]="pieces[31][0].getImgSrc()" alt=""
+        [cdkDragDisabled]="!pieces[31][0].getIsCanMove()" [cdkDragData]="pieces[31][0]"
+        (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+</div>
+<div class="square-white">

@@ -1,0 +1,91 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4 side-container">
+            <div *ngIf="isBluePlaying">
+                <h3 style="margin-top: 15px;"><span class="badge badge-pill badge-primary">Blue Turn:
+                        {{isBlueMyColor ? myPlayerData.userName: opponentData.userName}}</span>
+                </h3>
+                <div>Pieces count: {{bluePiecesCount}}</div>
+                <app-spinner *ngIf="isBluePlaying !== isBlueMyColor"></app-spinner>
+                <h3 style="margin-top: 15px;"><span class="badge badge-pill badge-danger">Red:
+                        {{!isBlueMyColor ? myPlayerData.userName: opponentData.userName}}</span>
+                </h3>
+                <div>Pieces count: {{redPiecesCount}}</div>
+            </div>
+            <div *ngIf="!isBluePlaying">
+                <h3 style="margin-top: 15px;"><span class="badge badge-pill badge-danger">Red Turn:
+                        {{!isBlueMyColor ? myPlayerData.userName: opponentData.userName}}</span>
+                </h3>
+                <div>Pieces count: {{redPiecesCount}}</div>
+                <app-spinner *ngIf="isBluePlaying !== isBlueMyColor"></app-spinner>
+                <h3 style="margin-top: 15px;"><span class="badge badge-pill badge-primary">Blue:
+                        {{isBlueMyColor ? myPlayerData.userName: opponentData.userName}}</span>
+                </h3>
+                <div>Pieces count: {{bluePiecesCount}}</div>
+            </div>
+            <button type="button" #buttonLaunchLeavingModal class="btn btn-warning" style="margin-top: 5vh;"
+                data-toggle="modal" data-target="#modalLeavingTheGame">
+                Leave the game
+            </button> <br>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal" #modalButton
+                hidden="true">
+                Launch demo modal
+            </button>
+        </div>
+        <div class="col-8">
+            <div class="damka-container" [ngStyle]="{'outline': OUTLINE_STYLE}" cdkDropListGroup>
+                <div class="two-squares-container" *ngFor="let piece of pieces; let i = index">
+                    <div class="square-white" *ngIf="isIndexInEvenRow(i)"></div>
+                    <div class="square-black" cdkDropList [id]="i" [cdkDropListData]="piece"
+                        (cdkDropListDropped)="onDrop($event)" [cdkDropListEnterPredicate]="isSquareAvailableToDrop">
+                        <img *ngIf="piece.length > 0" [src]="piece[0].getImgSrc()" alt=""
+                            [cdkDragDisabled]="!piece[0].getIsCanMove()" [cdkDragData]="piece[0]"
+                            (cdkDragStarted)="onPieceExitSquare($event)" cdkDrag>
+                    </div>
+                    <div class="square-white" *ngIf="!(isIndexInEvenRow(i))"></div>
+                </div>
+            </div>
+            <button id="buttonDone" type="button" class="btn btn-info btn-block" (click)="onClickButtonDone()"
+                [disabled]="isButtonDoneDisabled">Move done</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div #myModal class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{modalMessage}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="onClickButtonNewGame()">Play new game</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalLeavingTheGame" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">
+                    Are you sure you want to leave the game?
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="onClickButtonLeaveTheGame()">Yes, i'm
+                    sure</button>
+            </div>
+        </div>
+    </div>
+</div>

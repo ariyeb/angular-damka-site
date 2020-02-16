@@ -1,0 +1,41 @@
+.side-container {
+    height: 100vh;
+    padding-left: 5vw;
+}
+
+#buttonDone {
+    margin: 15px auto;
+    width: 41vw;
+}
+
+.damka-container {
+    width: 40vw;
+    height: 40vw;
+    margin: 15px auto;
+    display: flex;
+    flex-wrap: wrap;  
+}
+
+.two-squares-container {
+    width: 10vw;
+    height: 5vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.square-black {
+    background-color: black;
+    width: 5vw;
+    height: 5vw;
+}
+
+.square-white {
+    background-color: white;
+    width: 5vw;
+    height: 5vw;
+}
+
+img {
+    width: 5vw;
+    height: 5vw;
+}
