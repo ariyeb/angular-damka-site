@@ -45,10 +45,6 @@ export class LoginComponent implements OnInit {
         this.error = err;
         this.errorSub.unsubscribe();
       });
-      this.errorSub = this.loginService.errorSubject.subscribe((err) => {
-        this.error = err;
-        this.errorSub.unsubscribe();
-      });
       this.loginService.login(this.userName, this.password);
     } else {
       this.errorSub = this.loginService.errorSubject.subscribe((err) => {

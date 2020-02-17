@@ -9,6 +9,7 @@ import { DropData } from '../models/dropData.model';
 import { MoveDoneData } from '../models/moveDoneData.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-game',
@@ -45,9 +46,14 @@ export class GameComponent implements OnInit, OnDestroy {
   dropDataSub: Subscription;
   moveDoneDataSub: Subscription;
   opponentLeftSub: Subscription;
+  blueMovesCounter: number;
+  movesCounter: number;
+  isGameEnded: boolean;
 
-  constructor(private socketioSrvice: SocketioService, private router: Router) {
-  }
+  constructor(
+    private socketioSrvice: SocketioService,
+    private loginService: LoginService,
+    private router: Router) { }
 
   ngOnInit() {
     this.isButtonDoneDisabled = true;
@@ -60,6 +66,8 @@ export class GameComponent implements OnInit, OnDestroy {
     this.myPlayerData = this.socketioSrvice.getPlayer();
     this.opponentData = this.socketioSrvice.getOpponent();
     this.setOutlineStyle();
+    this.movesCounter = 0;
+    this.isGameEnded = false;
 
     this.dropDataSub = this.socketioSrvice.getDropData_Subject.subscribe((dropData: DropData) => {
       console.log("dropData", dropData);
@@ -89,8 +97,10 @@ export class GameComponent implements OnInit, OnDestroy {
     });
 
     this.opponentLeftSub = this.socketioSrvice.opponentLeftSubject.subscribe(() => {
-      this.modalMessage = this.opponentData.userName + " left the game";
-      this.modalButton.nativeElement.click();
+      if (!this.isGameEnded) {
+        this.modalMessage = this.opponentData.userName + " left the game";
+        this.modalButton.nativeElement.click();
+      }
       this.blockAllPieces();
     });
 
@@ -137,7 +147,6 @@ export class GameComponent implements OnInit, OnDestroy {
       return false;
     }
 
-    // return this.isSquareSuitableForMove(this.idToIndex(dropList.id));
     return this.isSquareSuitableForMove(+(dropList.id));
   }
 
@@ -168,6 +177,7 @@ export class GameComponent implements OnInit, OnDestroy {
     console.log("Potential Jumps:", this.potentialJumps);
 
     const resetFieldsForNextTurn = () => {
+      this.movesCounter++;
       this.isPieceCatured = false;
       this.isFirstMove = true;
       this.pieceJourney = [];
@@ -466,81 +476,6 @@ export class GameComponent implements OnInit, OnDestroy {
       }
     }
 
-    // // in case was a journey
-    // const exitCoordinates = this.indexToCoordinates(this.exitedId);
-    // const exitX = exitCoordinates.x;
-    // const exitY = exitCoordinates.y;
-    // let isPieceCanJump: boolean = false;
-    // 
-    // // Cheacking can jump down?
-    // if (y <= 6) {
-    //   if (
-    //     x <= 6 &&
-    //     this.pieces[this.coordinatesToIndex(x + 1, y + 1)].length === 1 &&
-    //     this.pieces[this.coordinatesToIndex(x + 1, y + 1)][0].getIsBlue() !== thePiece.getIsBlue() &&
-    //     this.pieces[this.coordinatesToIndex(x + 2, y + 2)].length === 0
-    //   ) {
-    //     if (this.isPieceCatured) {
-    //       if (exitX !== x + 2 || exitY !== y + 2) {
-    //         return true;
-    //       }
-    //     } else {
-    //       this.potentialJumps.push({ fromIndex: index, opponentIndex: this.coordinatesToIndex(x + 1, y + 1) });
-    //       isPieceCanJump = true;
-    //     }
-    //   }
-
-    //   if (
-    //     x >= 3 &&
-    //     this.pieces[this.coordinatesToIndex(x - 1, y + 1)].length === 1 &&
-    //     this.pieces[this.coordinatesToIndex(x - 1, y + 1)][0].getIsBlue() !== thePiece.getIsBlue() &&
-    //     this.pieces[this.coordinatesToIndex(x - 2, y + 2)].length === 0
-    //   ) {
-    //     if (this.isPieceCatured) {
-    //       if (exitX !== x - 2 || exitY !== y + 2) {
-    //         return true;
-    //       }
-    //     } else {
-    //       this.potentialJumps.push({ fromIndex: index, opponentIndex: this.coordinatesToIndex(x - 1, y + 1) });
-    //       isPieceCanJump = true;
-    //     }
-    //   }
-    // }
-
-    // // cheacking can jump up?
-    // if (y >= 3) {
-    //   if (
-    //     x <= 6 &&
-    //     this.pieces[this.coordinatesToIndex(x + 1, y - 1)].length === 1 &&
-    //     this.pieces[this.coordinatesToIndex(x + 1, y - 1)][0].getIsBlue() !== thePiece.getIsBlue() &&
-    //     this.pieces[this.coordinatesToIndex(x + 2, y - 2)].length === 0
-    //   ) {
-    //     if (this.isPieceCatured) {
-    //       if (exitX !== x + 2 || exitY !== y - 2) {
-    //         return true;
-    //       }
-    //     } else {
-    //       this.potentialJumps.push({ fromIndex: index, opponentIndex: this.coordinatesToIndex(x + 1, y - 1) });
-    //       isPieceCanJump = true;
-    //     }
-    //   }
-
-    //   if (
-    //     x >= 3 &&
-    //     this.pieces[this.coordinatesToIndex(x - 1, y - 1)].length === 1 &&
-    //     this.pieces[this.coordinatesToIndex(x - 1, y - 1)][0].getIsBlue() !== thePiece.getIsBlue() &&
-    //     this.pieces[this.coordinatesToIndex(x - 2, y - 2)].length === 0
-    //   ) {
-    //     if (this.isPieceCatured) {
-    //       if (exitX !== x - 2 || exitY !== y - 2) {
-    //         return true;
-    //       }
-    //     } else {
-    //       this.potentialJumps.push({ fromIndex: index, opponentIndex: this.coordinatesToIndex(x - 1, y - 1) });
-    //       isPieceCanJump = true;
-    //     }
-    //   }
-    // }
     return isPieceCanJump;
   }
 
@@ -926,22 +861,26 @@ export class GameComponent implements OnInit, OnDestroy {
   cheackIsWasAVictory() {
     if (this.redPiecesCount === 0) {
       if (this.isBlueMyColor) {
-        this.modalMessage = "Congratulations, you won the game"
+        this.modalMessage = "Congratulations, you won the game";
+        this.loginService.updateRating(this.opponentData.rating, this.movesCounter);
       } else {
         this.modalMessage = this.opponentData.userName + ", won the game";
       }
       this.modalButton.nativeElement.click();
       this.blockAllPieces();
+      this.isGameEnded = true;
       return true;
     }
     if (this.bluePiecesCount === 0) {
       if (!this.isBlueMyColor) {
-        this.modalMessage = "Congratulations, you won the game"
+        this.modalMessage = "Congratulations, you won the game";
+        this.loginService.updateRating(this.opponentData.rating, this.movesCounter);
       } else {
-        this.modalMessage = this.opponentData.userName + ", won the game";;
+        this.modalMessage = this.opponentData.userName + ", won the game";
       }
       this.modalButton.nativeElement.click();
       this.blockAllPieces();
+      this.isGameEnded = true;
       return true;
     }
 

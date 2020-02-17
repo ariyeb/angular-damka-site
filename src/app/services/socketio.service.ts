@@ -35,6 +35,12 @@ export class SocketioService {
         this.getDropData_Subject = new Subject<DropData>();
         this.opponentLeftSubject = new Subject<null>();
         this.getMoveDoneData_Subject = new Subject<MoveDoneData>();
+
+        this.loginService.ratingUpdateSubject.subscribe((newRating) => {
+            this.user.rating = newRating;
+            this.player.rating = newRating;
+            this.emitUpdateRating(newRating);
+        });
     }
 
     setupSocketConnection() {
@@ -107,6 +113,10 @@ export class SocketioService {
 
     emitMoveDone(moveDoneData: MoveDoneData) {
         this.socket.emit('moveDone', moveDoneData);
+    }
+
+    emitUpdateRating(newRating: number) {
+        this.socket.emit('ratingUpdate', newRating);
     }
 
     emitPlayerLeftTheGame() {

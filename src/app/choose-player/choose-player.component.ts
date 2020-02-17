@@ -55,5 +55,4 @@ export class ChoosePlayerComponent implements OnInit, OnDestroy {
     this.socketioService.emitAgreeToPlay(this.opponent);
     this.buttonLaunchModal.nativeElement.click();
   }
-
 }

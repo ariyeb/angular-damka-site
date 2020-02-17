@@ -10,6 +10,7 @@ import { User } from '../models/user.model';
 })
 export class LoginService {
     private user: User;
+    ratingUpdateSubject: Subject<number>;
     userSubject: Subject<User>;
     errorSubject: Subject<string>;
     private HTTP_OPTIONS;
@@ -19,6 +20,7 @@ export class LoginService {
         this.token = null;
         this.errorSubject = new Subject<string>();
         this.userSubject = new Subject<User>();
+        this.ratingUpdateSubject = new Subject<number>();
         this.HTTP_OPTIONS = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
@@ -36,6 +38,34 @@ export class LoginService {
                 if (err.status = 400) {
                     this.errorSubject.next('User Name already exist');
                 };
+            });
+    }
+
+    updateRating(looserRating: number, movesCount: number) {
+        const winnerRating = this.user.rating;
+        console.log('currentRating:', winnerRating);
+        let newRating: number = winnerRating + 30 + Math.ceil(500 / movesCount);
+
+        if (looserRating <= winnerRating) {
+            newRating += Math.ceil(looserRating / winnerRating * 50);
+        } else {
+            newRating += 100 - Math.ceil(winnerRating / looserRating * 50);
+        }
+
+        const url = environment.SERVER_ENDPOINT + '/users/me';
+        const headers = {
+            headers: new HttpHeaders({
+                'Authorization': 'Bearer ' + this.token
+            })
+        };
+
+        this.http.patch(
+            url, { rating: newRating }, headers).subscribe((res: { rating: number }) => {
+                console.log('userUpdatedRating:', res.rating);
+                this.user.rating = res.rating;
+                this.ratingUpdateSubject.next(res.rating);
+            }, (err) => {
+                console.log(err)
             });
     }
 
