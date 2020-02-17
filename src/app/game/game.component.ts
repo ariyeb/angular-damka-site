@@ -46,6 +46,7 @@ export class GameComponent implements OnInit, OnDestroy {
   dropDataSub: Subscription;
   moveDoneDataSub: Subscription;
   opponentLeftSub: Subscription;
+  tieSub: Subscription;
   blueMovesCounter: number;
   movesCounter: number;
   isGameEnded: boolean;
@@ -70,14 +71,12 @@ export class GameComponent implements OnInit, OnDestroy {
     this.isGameEnded = false;
 
     this.dropDataSub = this.socketioSrvice.getDropData_Subject.subscribe((dropData: DropData) => {
-      console.log("dropData", dropData);
       let tempPiece = this.pieces[dropData.exitId][0];
       this.pieces[dropData.exitId] = [];
       this.pieces[dropData.droppedId].push(tempPiece);
     });
 
     this.moveDoneDataSub = this.socketioSrvice.getMoveDoneData_Subject.subscribe((moveDoneData: MoveDoneData) => {
-      console.log('moveDoneData:', moveDoneData);
       if (moveDoneData.pieceIndexToCrown !== -1) {
         this.crownPieceIfItEnterTheKingsRow(moveDoneData.pieceIndexToCrown);
       }
@@ -91,8 +90,19 @@ export class GameComponent implements OnInit, OnDestroy {
         this.cheackIsWasAVictory();
       } else {
         this.isBluePlaying = !this.isBluePlaying;
-        this.enableToMovementPotentialPieces();
+        const isPotentialMove: boolean = this.enableToMovementPotentialPieces();
         this.setOutlineStyle();
+        if (!isPotentialMove) {
+          if (moveDoneData.isOpponentCantMove) {
+            this.modalMessage = "TIE!"
+            this.modalButton.nativeElement.click();
+            this.blockAllPieces();
+          } else {
+            this.socketioSrvice.emitMoveDone({ toPlayer: this.opponentData, erasedPieces: [], pieceIndexToCrown: -1, isVictory: false, redPiecesCount: this.redPiecesCount, bluePiecesCount: this.bluePiecesCount, isOpponentCantMove: true });
+            this.resetFieldsForNextTurn();
+          }
+
+        }
       }
     });
 
@@ -101,6 +111,12 @@ export class GameComponent implements OnInit, OnDestroy {
         this.modalMessage = this.opponentData.userName + " left the game";
         this.modalButton.nativeElement.click();
       }
+      this.blockAllPieces();
+    });
+
+    this.tieSub = this.socketioSrvice.tieSubject.subscribe(() => {
+      this.modalMessage = "Tie!"
+      this.modalButton.nativeElement.click();
       this.blockAllPieces();
     });
 
@@ -121,10 +137,10 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.dropDataSub.unsubscribe();
     this.moveDoneDataSub.unsubscribe();
+    this.tieSub.unsubscribe();
+    this.opponentLeftSub.unsubscribe();
 
     this.socketioSrvice.emitPlayerLeftTheGame();
-
-    console.log('game component on destroy');
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -173,21 +189,8 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   onClickButtonDone() {
-    console.log("Captured Pieces:", this.capturedPieces);
-    console.log("Potential Jumps:", this.potentialJumps);
-
-    const resetFieldsForNextTurn = () => {
-      this.movesCounter++;
-      this.isPieceCatured = false;
-      this.isFirstMove = true;
-      this.pieceJourney = [];
-      this.capturedPieces = [];
-      this.potentialJumps = [];
-      this.isBluePlaying = !this.isBluePlaying;
-      this.setOutlineStyle();
-      this.blockAllPieces();
-      this.isButtonDoneDisabled = true;
-    }
+    // console.log("Captured Pieces:", this.capturedPieces);
+    // console.log("Potential Jumps:", this.potentialJumps);
 
     let { isPiecesHuffed, erasedPieces, isPlayerPieceHuffed } = this.CheackIsPiecesCouldHaveJumpInThisTurnAndHuffThem();
     if (isPiecesHuffed) {
@@ -197,8 +200,8 @@ export class GameComponent implements OnInit, OnDestroy {
         erasedPieces = erasedPieces.concat(this.capturedPieces);
       }
       if (!this.cheackIsWasAVictory()) {
-        this.socketioSrvice.emitMoveDone({ toPlayer: this.opponentData, erasedPieces: erasedPieces, pieceIndexToCrown: -1, isVictory: false, redPiecesCount: this.redPiecesCount, bluePiecesCount: this.bluePiecesCount });
-        resetFieldsForNextTurn();
+        this.socketioSrvice.emitMoveDone({ toPlayer: this.opponentData, erasedPieces: erasedPieces, pieceIndexToCrown: -1, isVictory: false, redPiecesCount: this.redPiecesCount, bluePiecesCount: this.bluePiecesCount, isOpponentCantMove: false });
+        this.resetFieldsForNextTurn();
         return;
       }
     }
@@ -207,13 +210,13 @@ export class GameComponent implements OnInit, OnDestroy {
     this.pieces[this.droppedId][0].setIsCanMove(false);
     this.removePieces(this.capturedPieces);
     if (!this.cheackIsWasAVictory()) {
-      this.socketioSrvice.emitMoveDone({ toPlayer: this.opponentData, erasedPieces: this.capturedPieces, pieceIndexToCrown, isVictory: false, redPiecesCount: this.redPiecesCount, bluePiecesCount: this.bluePiecesCount });
-      resetFieldsForNextTurn();
+      this.socketioSrvice.emitMoveDone({ toPlayer: this.opponentData, erasedPieces: this.capturedPieces, pieceIndexToCrown, isVictory: false, redPiecesCount: this.redPiecesCount, bluePiecesCount: this.bluePiecesCount, isOpponentCantMove: false });
+      this.resetFieldsForNextTurn();
       return;
     }
 
     // victory
-    this.socketioSrvice.emitMoveDone({ toPlayer: this.opponentData, erasedPieces: this.capturedPieces, pieceIndexToCrown, isVictory: true, redPiecesCount: this.redPiecesCount, bluePiecesCount: this.bluePiecesCount });
+    this.socketioSrvice.emitMoveDone({ toPlayer: this.opponentData, erasedPieces: this.capturedPieces, pieceIndexToCrown, isVictory: true, redPiecesCount: this.redPiecesCount, bluePiecesCount: this.bluePiecesCount, isOpponentCantMove: false });
   }
 
   onClickButtonLeaveTheGame() {
@@ -237,6 +240,19 @@ export class GameComponent implements OnInit, OnDestroy {
   //   }
   //   return +idNum;
   // }
+
+  resetFieldsForNextTurn() {
+    this.movesCounter++;
+    this.isPieceCatured = false;
+    this.isFirstMove = true;
+    this.pieceJourney = [];
+    this.capturedPieces = [];
+    this.potentialJumps = [];
+    this.isBluePlaying = !this.isBluePlaying;
+    this.setOutlineStyle();
+    this.blockAllPieces();
+    this.isButtonDoneDisabled = true;
+  }
 
   coordinatesToIndex(x: number, y: number) {
     x = ((x % 2) === 0) ? x : x + 1;
@@ -269,6 +285,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   enableToMovementPotentialPieces() {
+    let isPieceCanMoveOrJump: boolean = false;
     for (let i = 0; i < this.pieces.length; i++) {
       if (
         this.pieces[i].length !== 0 &&
@@ -276,8 +293,11 @@ export class GameComponent implements OnInit, OnDestroy {
         this.isPieceCanMoveOrJumpInFirstMove(i)
       ) {
         this.pieces[i][0].setIsCanMove(true);
+        isPieceCanMoveOrJump = true;
       }
     }
+
+    return isPieceCanMoveOrJump;
   }
 
   isPieceCanMoveOrJumpInFirstMove(index: number) {
@@ -666,7 +686,6 @@ export class GameComponent implements OnInit, OnDestroy {
         }
 
         if (Math.abs(toX - fromX) === 2 && toY - fromY === -2) {
-          // console.log(toX, toY);
           return isCanJumpUp();
         }
         return false;
@@ -799,7 +818,6 @@ export class GameComponent implements OnInit, OnDestroy {
     let isPiecesHuffed: boolean = false;
     const erasedPieces: number[] = [];
     if (this.isPieceCatured && this.iskingCanJumpOrPieceThroughJourney(this.droppedId)) {
-      console.log("piece could jump more");
       this.pieces[this.droppedId] = [];
       erasedPieces.push(this.droppedId);
       this.subtractPiecesInPiecesCount(this.isBluePlaying, 1);

@@ -34,7 +34,6 @@ export class ChoosePlayerComponent implements OnInit, OnDestroy {
     });
     this.getOpponentSub = this.socketioService.getOpponentSubject.subscribe((opponent) => {
       this.opponent = opponent;
-      console.log("component opponet", this.opponent);
       this.buttonLaunchModal.nativeElement.click();
     });
     this.socketioService.emitPlayerToServer();
@@ -43,7 +42,6 @@ export class ChoosePlayerComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.getPlayersSub.unsubscribe();
     this.getOpponentSub.unsubscribe();
-    console.log('choose player on destroy')
   }
 
 

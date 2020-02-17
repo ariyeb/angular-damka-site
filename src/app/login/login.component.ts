@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.userName = (this.form.get('userName').value + "").trim();
     this.password = (this.form.get('password').value + "").trim();
-    console.log(this.userName, this.password);
+    console.log('userName: ', this.userName);
 
     if (this.userName.length === 0 || this.password.length === 0) {
       this.error = "You didn't enter user name or password"

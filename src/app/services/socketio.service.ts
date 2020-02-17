@@ -24,6 +24,7 @@ export class SocketioService {
     getDropData_Subject: Subject<DropData>;
     getMoveDoneData_Subject: Subject<MoveDoneData>;
     opponentLeftSubject: Subject<null>;
+    tieSubject: Subject<null>;
     isBlue: Boolean;
 
     constructor(private loginService: LoginService, private router: Router) {
@@ -35,6 +36,7 @@ export class SocketioService {
         this.getDropData_Subject = new Subject<DropData>();
         this.opponentLeftSubject = new Subject<null>();
         this.getMoveDoneData_Subject = new Subject<MoveDoneData>();
+        this.tieSubject = new Subject<null>();
 
         this.loginService.ratingUpdateSubject.subscribe((newRating) => {
             this.user.rating = newRating;
@@ -46,25 +48,21 @@ export class SocketioService {
     setupSocketConnection() {
         if (!this.player) {
             this.user = this.loginService.getUser();
-            console.log("socket user", this.user);
             this.socket = io(environment.SERVER_ENDPOINT);
             console.log('socketioSevice - new socket connection');
         }
 
         this.socket.on('playersList', ({ players }) => {
-            console.log("socket players:", players);
             this.getPlayersSubject.next(players);
         });
 
         this.socket.on('choosedByPlayer', (opponent: Player) => {
             this.opponent = opponent;
-            console.log("service opponent:", this.opponent);
             this.getOpponentSubject.next(this.opponent);
         });
     }
 
     disconnect() {
-        console.log('disconnect:', this.player);
         this.socket.emit('disconnection', this.player);
         this.player = null;
         this.opponent = null;
@@ -74,7 +72,6 @@ export class SocketioService {
     emitPlayerToServer() {
         if (!this.player) {
             this.socket.emit('enterTheSite', this.user, (player: Player) => {
-                console.log("socket player", player);
                 this.player = player;
                 this.getPlayer_Subject.next(this.player);
             });
@@ -115,6 +112,10 @@ export class SocketioService {
         this.socket.emit('moveDone', moveDoneData);
     }
 
+    emitTie() {
+        this.socket.emit('tie', this.opponent.id);
+    }
+
     emitUpdateRating(newRating: number) {
         this.socket.emit('ratingUpdate', newRating);
     }
@@ -123,6 +124,8 @@ export class SocketioService {
         this.socket.emit('playerLeftTheGame', this.opponent);
         this.socket.off('getDropData');
         this.socket.off('getMoveDone');
+        this.socket.off('opponentLeftTheGame');
+        this.socket.off('tie');
         this.opponent = null;
     }
 
@@ -147,6 +150,9 @@ export class SocketioService {
         });
         this.socket.on('opponentLeftTheGame', () => {
             this.opponentLeftSubject.next();
+        });
+        this.socket.on('tie', () => {
+            this.tieSubject.next();
         });
     }
 

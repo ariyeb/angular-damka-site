@@ -7,4 +7,5 @@ export interface MoveDoneData {
     isVictory: boolean;
     redPiecesCount: number;
     bluePiecesCount: number;
+    isOpponentCantMove: boolean;
 }

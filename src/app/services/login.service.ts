@@ -55,18 +55,18 @@ export class LoginService {
         const url = environment.SERVER_ENDPOINT + '/users/me';
         const headers = {
             headers: new HttpHeaders({
-                'Authorization': 'Bearer ' + this.token
+                'Authorization': 'Bearer ' + this.token,
+                'Content-Type': 'application/json'
             })
         };
 
-        this.http.patch(
-            url, { rating: newRating }, headers).subscribe((res: { rating: number }) => {
-                console.log('userUpdatedRating:', res.rating);
-                this.user.rating = res.rating;
-                this.ratingUpdateSubject.next(res.rating);
-            }, (err) => {
-                console.log(err)
-            });
+        this.http.patch(url, { rating: newRating }, headers).subscribe((res: { rating: number }) => {
+            console.log('userUpdatedRating:', res.rating);
+            this.user.rating = res.rating;
+            this.ratingUpdateSubject.next(res.rating);
+        }, (err) => {
+            console.log(err)
+        });
     }
 
     login(userName: string, password: string) {
@@ -78,7 +78,7 @@ export class LoginService {
             this.handleResultOfLoginOrSignup(res);
         }, (err) => {
             if (err.status = 400) {
-                this.errorSubject.next('User name or Password are incorecct');
+                this.errorSubject.next('User name or Password are incorecct. If you are not registered, please sign up.');
             };
         });
     }
@@ -91,13 +91,10 @@ export class LoginService {
             })
         };
         this.http.post(url, null, header).subscribe((res) => {
-            console.log(res);
             this.router.navigate(['']);
             this.token = null;
             this.user = null;
         }, (err) => {
-            console.log("url:", url);
-            console.log("token: ", this.token);
             console.log(err);
             this.router.navigate(['']);
             this.token = null;
@@ -108,7 +105,6 @@ export class LoginService {
     private handleResultOfLoginOrSignup(res) {
         this.token = res.token;
         this.user = { userName: res.user.userName, rating: res.user.rating, id: res.user._id };
-        console.log("user", this.user);
         this.userSubject.next(this.user);
         this.router.navigate(['/main/choose-player']);
     }
